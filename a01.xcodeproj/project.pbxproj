@@ -10,9 +10,33 @@
 		BBC8F5FA2EA94A6C00DAE45B /* a01.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = a01.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		BBC8F60B2EA94D5500DAE45B /* Exceptions for "a01" folder in "a01" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				.swift,
+			);
+			target = BBC8F5F92EA94A6C00DAE45B /* a01 */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		BBC8F60C2EA94D5500DAE45B /* Exceptions for "a01" folder in "Compile Sources" phase from "a01" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = BBC8F5F62EA94A6C00DAE45B /* Sources */;
+			membershipExceptions = (
+				.swift,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		BBC8F5FC2EA94A6C00DAE45B /* a01 */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				BBC8F60B2EA94D5500DAE45B /* Exceptions for "a01" folder in "a01" target */,
+				BBC8F60C2EA94D5500DAE45B /* Exceptions for "a01" folder in "Compile Sources" phase from "a01" target */,
+			);
 			path = a01;
 			sourceTree = "<group>";
 		};
