@@ -7,17 +7,21 @@
 
 import SwiftUI
 
-
 struct BooksView: View {
-    
     @EnvironmentObject var favorites: FavoritesViewModel
     @Binding var searchText: String
-    
+	
+    private let bookManager = CategoryManager<BookModel>(storageKey: "favoriteBooks")
+
+    private var filtered: [BookModel] {
+        bookManager.filteredItems(items: favorites.books, searchText: searchText)
+    }
+
     var body: some View {
         ScrollView {
-            LazyVStack {
-                ForEach(favorites.filteredCities(searchText: searchText)) { city in
-                    CityCardView(city: city)
+            LazyVStack(spacing: 10) {
+                ForEach(filtered) { book in
+                    BookRowView(book: book)
                 }
             }
             .padding()
@@ -29,3 +33,4 @@ struct BooksView: View {
     BooksView(searchText: .constant(""))
         .environmentObject(FavoritesViewModel())
 }
+
