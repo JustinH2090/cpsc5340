@@ -1,4 +1,4 @@
-	//
+//
 //  Character.swift
 //  RickAndMortyApiApp
 //
@@ -15,6 +15,8 @@ struct RickAndMortyCharacter: Identifiable, Decodable, Hashable {
     let id: Int
     let name: String
     let status: String
+    let species: String
+    let gender: String
     let image: String
     let episode: [String]
 }

@@ -12,61 +12,39 @@ struct ListView: View {
     private let columns = [GridItem(.flexible()), GridItem(.flexible())]
 
     var body: some View {
-        ScrollView {
+        ScrollView(.vertical) {
             if vm.isLoading {
-                ProgressView("Loading Characters...")
+                ProgressView("Loading")
                     .padding()
             } else if vm.characters.isEmpty {
                 Text("No characters found.")
                     .padding()
                     .multilineTextAlignment(.center)
             } else {
-                LazyVGrid(columns: columns, spacing: 16) {
+                LazyVGrid(columns: columns, spacing: 20) {
                     ForEach(vm.characters) { character in
-                        NavigationLink(destination: DetailsView(character: character)) {
-                            VStack(alignment: .leading, spacing: 10) {
-                                AsyncImage(url: URL(string: character.image)) { phase in
-                                    switch phase {
-                                    case .empty:
-                                        ZStack {
-                                            Rectangle()
-                                                .fill(Color.gray.opacity(0.2))
-                                                .frame(maxWidth: .infinity)
-                                                .aspectRatio(1.1, contentMode: .fill)
-                                            ProgressView()
-                                        }
-                                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                                    case .success(let image):
-                                        image
-                                            .resizable()
-                                            .frame(maxWidth: .infinity)
-                                            .aspectRatio(1.1, contentMode: .fill)
-                                            .clipped()
-                                            .clipShape(RoundedRectangle(cornerRadius: 12))
-                                    case .failure:
-                                        Color.gray
-                                            .frame(maxWidth: .infinity)
-                                            .aspectRatio(1.1, contentMode: .fill)
-                                            .clipShape(RoundedRectangle(cornerRadius: 12))
-                                    @unknown default:
-                                        EmptyView()
-                                    }
-                                }
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text(character.name)
-                                        .font(.headline)
-                                        .fontWeight(.semibold)
-                                        .foregroundStyle(.primary)
-                                        .lineLimit(2)
-                                    Text(character.status)
-                                        .font(.subheadline)
-                                        .foregroundStyle(.secondary)
-                                }
+                        NavigationLink {
+                            DetailsView(character: character)
+                        } label: {
+                            VStack(spacing: 10) {
+                                Text(character.name)
+                                    .font(.headline)
+                                    .fontWeight(.semibold)
+                                    .multilineTextAlignment(.center)
+                                    .lineLimit(2)
+                                    .frame(maxWidth: .infinity)
+
+                                Text(character.status)
+                                    .font(.subheadline)
+                                    .foregroundStyle(.secondary)
                             }
-                            .padding(12)
-                            .background(.ultraThinMaterial)
-                            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 125)
+                            .background(Color.gray.opacity(0.1))
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
                         }
+                        .buttonStyle(.plain)
                     }
                 }
                 .padding()
@@ -76,14 +54,13 @@ struct ListView: View {
             vm.loadCharacters()
         }
         .alert("Error", isPresented: Binding(
-            get: { vm.errorMessage != nil },
-            set: { _ in vm.errorMessage = nil }
+            get: {vm.errorMessage != nil},
+            set: {_ in vm.errorMessage = nil}
         )) {
             Button("OK", role: .cancel) { }
         } message: {
             Text(vm.errorMessage ?? "Unknown error")
         }
-        .navigationTitle("Rick & Morty")
     }
 }
 

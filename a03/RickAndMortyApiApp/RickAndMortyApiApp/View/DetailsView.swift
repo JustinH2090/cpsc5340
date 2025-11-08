@@ -15,7 +15,10 @@ struct DetailsView: View {
                 Text(character.name)
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                    .padding(.top)
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(.top, 25)
+
                 AsyncImage(url: URL(string: character.image)) { phase in
                     switch phase {
                     case .empty:
@@ -23,64 +26,47 @@ struct DetailsView: View {
                             Rectangle().fill(Color.gray.opacity(0.15))
                             ProgressView()
                         }
-                        .frame(height: 260)
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .frame(height: 300)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
                     case .success(let image):
                         image
                             .resizable()
                             .scaledToFill()
-                            .frame(height: 260)
+                            .frame(height: 300)
                             .clipped()
-                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
                     case .failure:
                         Color.gray
-                            .frame(height: 260)
-                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                            .frame(height: 300)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
                     @unknown default:
                         EmptyView()
                     }
+                }.padding(.top, 50)
+
+                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 100) {
+                    detailCell(title: "Status", value: character.status)
+                    detailCell(title: "Species", value: character.species)
+                    detailCell(title: "Gender", value: character.gender)
+                    detailCell(title: "Episodes", value: "\(character.episode.count) total")
                 }
-                Group {
-                    Text("Status")
-                        .font(.headline)
-                    Text(character.status)
-                        .font(.subheadline)
-                    Text("ID")
-                        .font(.headline)
-                        .padding(.top, 6)
-                    Text("\(character.id)")
-                        .font(.subheadline)
-                    Text("Episodes")
-                        .font(.headline)
-                        .padding(.top, 6)
-                    Text("\(character.episode.count) total")
-                        .font(.subheadline)
-                }
-                if !character.episode.isEmpty {
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 8) {
-                            ForEach(character.episode.prefix(6), id: \.self) { ep in
-                                Text(ep.split(separator: "/").last.map(String.init) ?? "Ep")
-                                    .font(.caption)
-                                    .padding(.vertical, 6)
-                                    .padding(.horizontal, 10)
-                                    .background(Color.gray.opacity(0.2))
-                                    .clipShape(Capsule())
-                            }
-                            if character.episode.count > 6 {
-                                Text("+\(character.episode.count - 6) more")
-                                    .font(.caption)
-                                    .padding(.vertical, 6)
-                                    .padding(.horizontal, 10)
-                                    .background(Color.gray.opacity(0.2))
-                                    .clipShape(Capsule())
-                            }
-                        }
-                    }
-                    .padding(.top, 4)
-                }
+                .padding()
+                .background(Color.gray.opacity(0.1))
+                .clipShape(RoundedRectangle(cornerRadius:50))
+                .padding(.top, 50)
             }
             .padding(.horizontal)
+        }
+    }
+
+    @ViewBuilder
+    private func detailCell(title: String, value: String) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(title)
+                .font(.headline)
+            Text(value)
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
         }
     }
 }
@@ -90,6 +76,8 @@ struct DetailsView: View {
         id: 1,
         name: "Rick Sanchez",
         status: "Alive",
+        species: "Human",
+        gender: "Male",
         image: "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
         episode: [
             "https://rickandmortyapi.com/api/episode/1",
